@@ -1,0 +1,159 @@
+{
+  "name": "Estudio AG | Registro automático de clientes",
+  "nodes": [
+    {
+      "parameters": {
+        "formTitle": "Estudio AG -  Consulta de clientes.",
+        "formDescription": "Completá tus datos para que podamos contactarte.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Nombre completo"
+            },
+            {
+              "fieldLabel": "Teléfono"
+            },
+            {
+              "fieldLabel": "Servicio",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "Corte de Pelo"
+                  },
+                  {
+                    "option": "Barba "
+                  },
+                  {
+                    "option": "Corte + Barba"
+                  }
+                ]
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2.6,
+      "position": [
+        -128,
+        0
+      ],
+      "id": "04dccf85-1876-4eea-b8df-aeebed98f5a6",
+      "name": "On form submission"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "",
+          "mode": "name"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Nombre Completo ": "={{ $json['Nombre completo'] }}",
+            "Teléfono": "={{ $json['Teléfono'] }}",
+            "Servicio": "={{ $json.Servicio }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Nombre Completo ",
+              "displayName": "Nombre Completo ",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Teléfono",
+              "displayName": "Teléfono",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Servicio",
+              "displayName": "Servicio",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        32,
+        0
+      ],
+      "id": "f26b0a23-57c0-4c33-951c-6c065776dcc7",
+      "name": "Append row in sheet"
+    },
+    {
+      "parameters": {
+        "sendTo": "destinatario@ejemplo.com",
+        "subject": "Estudio AG | Nueva consulta de cliente",
+        "emailType": "text",
+        "message": "=¡Hola! Se recibió una nueva consulta en Estudio AG.  Nombre: {{ $('On form submission').item.json['Nombre completo'] }}  Teléfono: {{ $('On form submission').item.json['Teléfono'] }}  Servicio: {{ $('On form submission').item.json['Servicio'] }}  Este mensaje fue enviado automáticamente desde n8n.",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        256,
+        0
+      ],
+      "id": "7bb059d5-ab41-4ce8-8ed3-f764cd15a19b",
+      "name": "Send a message"
+    }
+  ],
+  "connections": {
+    "On form submission": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "nodeGroups": [],
+  "tags": []
+}
