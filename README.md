@@ -28,7 +28,7 @@ Esta automatización permite centralizar la información y reducir las tareas ad
 
 ## Cómo utilizarlo
 
-1. Importar el archivo `Estudio_AG_workflow_publico.json` en n8n.
+1. Importar el archivo `Estudio_AG_workflow_publico_actualizado.json` en n8n.
 2. Conectar una cuenta de Google Sheets y seleccionar una planilla con las columnas correspondientes.
 3. Conectar una cuenta de Gmail y configurar el destinatario.
 4. Ejecutar una prueba del workflow.
